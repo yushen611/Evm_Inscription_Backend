@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import Example, EventsGetter, TokenInfo
+from routers import Example, TokenInfo
 
 app = FastAPI()
 
@@ -8,7 +8,6 @@ def read_root():
     return {"Hello": "World"}
 
 app.include_router(Example.router)
-app.include_router(EventsGetter.router)
 app.include_router(TokenInfo.router)
 
 if __name__ == '__main__':

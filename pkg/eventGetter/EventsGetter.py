@@ -4,19 +4,18 @@ import csv
 import os
 import requests
 from dotenv import load_dotenv
+from config.config import *
 
-
-router = APIRouter()
 # 根据contract地址 获取所有的events(qhx)
 
 # 加载环境变量
 load_dotenv()
 
-api_key = os.environ.get("API_KEY")
-contract_address = os.environ.get("CONTRACT_ADDRESS")
-topic0 = os.environ.get("TOPIC_0")
-from_block = os.environ.get("CONTRACT_BLOCK")
-event_csv_file_path = os.environ.get("EVENT_FILE")
+api_key = API_KEY
+contract_address = CONTRACT_ADDRESS
+topic0 = TOPIC_0
+from_block = CONTRACT_BLOCK
+event_csv_file_path = EVENT_FILE
 
 
 # 判断文件是否存在
@@ -74,17 +73,10 @@ def write_events_file(file_path,data):
             values = [row.get(field, '') for field in csv_headers]
             csv_writer.writerow(values)
 
-
-@router.get("/events/ping")
-def read_root():
-    # 使用成功响应的帮助函数
-    return success_response(data={"Hello": "events"})
-
-
-# 在路由中调用相关函数
-@router.get("/events/getter")
-def events_getter():
-    create_event_file_with_header(event_csv_file_path)
+def get_event():
+    # 这里返回list of envets
     result = get_data()
-    write_events_file(event_csv_file_path, result)
-    return success_response(data={"EventsGetter": "success"})
+    ...
+
+
+
