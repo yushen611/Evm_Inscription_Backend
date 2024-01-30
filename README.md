@@ -16,6 +16,12 @@ pip install "uvicorn[standard]"
 ```bash
 python -m uvicorn main:app --reload
 ```
+## 说明
+
+在金融和交易的语境中，“ticker”或“ticker symbol”通常是指代股票、债券、货币等交易工具的简短代码。所以在这里，tick 可能是用来唯一标识这个 Fungible Token 协议的一种缩写或代码。  
+
+例如，如果你有一个关于以太坊（Ethereum）的 Fungible Token，tick 可能会是 ETH 的类似标识符。
+
 ## 任务
 
 前端

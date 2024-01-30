@@ -9,7 +9,7 @@ def hex_to_json_str(hex_string: str) -> (str, bool):
         return "", False
 
 
-def json_to_object(json_data: str) -> (FT | NFT | None, bool):
+def json_to_object(json_data: str) -> (DeployFT| MintFT | TransferFT | NFT | None, bool):
     try:
         loads(json_data)
     except BaseException as e:
@@ -47,5 +47,3 @@ def hex_to_object(hex_string: str) -> (FT | NFT | None, bool):
         return None, False
 
 
-if __name__ == '__main__':
-    pass

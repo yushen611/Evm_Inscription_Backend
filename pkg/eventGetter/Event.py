@@ -13,7 +13,6 @@ class Event:
     logIndex: int = field(default=None)
     transactionHash: str = field(default=None)
     transactionIndex: int = field(default=None)
-    sender: str = field(default=None) # Assuming you want to keep this field as well.
 
 def dict_to_event(event_dict):
     return Event(**event_dict)

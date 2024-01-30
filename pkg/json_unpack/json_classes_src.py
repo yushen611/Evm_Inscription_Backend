@@ -44,6 +44,7 @@ class NFT:
         self.attributes: dict[str, str] = dict()
         for it in temp:
             self.attributes[it.pop('key')] = it.pop('value')
+        self.owner = None # NFt的拥有者
 
 
 """
@@ -72,7 +73,7 @@ class FTOp(Enum):
 class DeployFT:
     p: str
     op: FTOp = FTOp.deploy
-    tick: bytes
+    tick: str
     max: int
     lim: int
     dec: int
@@ -101,14 +102,14 @@ class DeployFT:
 class MintFT:
     p: str
     op: FTOp = FTOp.mint
-    tick: bytes
+    tick: str
     amt: int
 
     def __init__(self, json_data: str):
         data = loads(json_data)
         self.p = data['p']
         self.op = FTOp.mint
-        self.tick = bytes.fromhex(data['tick'])
+        self.tick = data['tick']
         self.amt = data['amt']
 
 
@@ -127,16 +128,16 @@ class MintFT:
 class TransferFT:
     p: str
     op: FTOp = FTOp.transfer
-    tick: bytes
-    to: bytes
+    tick: str
+    to: str
     amt: int
 
     def __init__(self, json_data: str):
         data = loads(json_data)
         self.p = data['p']
         self.op = FTOp.transfer
-        self.tick = bytes.fromhex(data['tick'])
-        self.to = bytes.fromhex(data['to'])
+        self.tick = data['tick']
+        self.to = data['to']
         self.amt = data['amt']
 
 

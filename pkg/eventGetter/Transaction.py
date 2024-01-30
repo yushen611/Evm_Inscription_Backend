@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field
+import requests
+from config.config import *
 
 def dict_to_transaction(transaction_dict):
     # The **operator unpacks the dictionary so that its contents are used as keyword arguments to the Transaction constructor.
@@ -28,3 +30,17 @@ class Transaction:
     value: int = field(default=None)
     yParity: int = field(default=None)
 
+
+def get_transaction_from(transactionHash:str)-> str:
+    url = f"https://sepolia.infura.io/v3/{INFURA_API_KEY}"
+    headers = {"Content-Type": "application/json"}
+    data = {
+        "jsonrpc": "2.0",
+        "method": "eth_getTransactionReceipt",
+        "params": [transactionHash],
+        "id": 1
+    }
+
+    response = requests.post(url, json=data, headers=headers).json()
+    from_addr = response['result']['from']
+    return from_addr
