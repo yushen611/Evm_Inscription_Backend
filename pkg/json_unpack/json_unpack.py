@@ -1,4 +1,4 @@
-from json_classes_src import *
+from pkg.json_unpack.json_classes_src import *
 
 
 def hex_to_json_str(hex_string: str) -> (str, bool):
