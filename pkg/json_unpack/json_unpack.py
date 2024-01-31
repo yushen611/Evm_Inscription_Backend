@@ -1,30 +1,46 @@
 from pkg.json_unpack.json_classes_src import *
+from web3 import Web3
+import json
 
-
-def hex_to_json_str(hex_string: str) -> (str, bool):
+def decode_contract_string(hex_string)->str:
     try:
-        return bytes.fromhex(hex_string).decode('utf-8'), True
+        # 移除开头的 "0x"（如果存在）
+        if hex_string.startswith("0x"):
+            hex_string = hex_string[2:]
+        
+        # 将十六进制字符串解码为字节
+        decoded_bytes = Web3.toBytes(hexstr=hex_string)
+
+        # 提取字符串长度
+        str_length = int(decoded_bytes[32:64].hex(), 16)
+
+        # 提取实际字符串
+        original_str = decoded_bytes[64:64+str_length].decode()
+        return original_str
     except BaseException as e:
         print(f"Hex String Decode error: {e}")
-        return "", False
+        return None
+    
 
 
-def json_to_object(json_data: str) -> (DeployFT| MintFT | TransferFT | NFT | None, bool):
+def hex_to_object(hex_string: str) -> (DeployFT| MintFT | TransferFT | NFT | None, bool):
+    json_str = decode_contract_string(hex_string)
+    print(json_str)
     try:
-        loads(json_data)
+        json_data = json.loads(json_str) # 把json_str 转成字典
     except BaseException as e:
         print(f"Invalid JSON: {e}")
         return None, False
-    ft = loads(json_data)
-    if 'op' not in ft:
+
+    if "op" not in json_data:
         try:
-            ft = NFT(ft)
+            ft = NFT(json_data)
         except BaseException as e:
             print(f"JSON Parsing to NFT error: {e}")
             return None, False
     else:
         try:
-            match ft["op"]:
+            match json_data["op"]:
                 case FTOp.deploy.value:
                     ft = DeployFT(json_data)
                 case FTOp.mint.value:
@@ -32,18 +48,12 @@ def json_to_object(json_data: str) -> (DeployFT| MintFT | TransferFT | NFT | Non
                 case FTOp.transfer.value:
                     ft = TransferFT(json_data)
                 case _:
-                    ft = None
+                    return None, False
         except BaseException as e:
             print(f"JSON Parsing to FT error {e}")
             return None, False
     return ft, True
 
 
-def hex_to_object(hex_string: str) -> (FT | NFT | None, bool):
-    try:
-        return json_to_object(hex_to_json_str(hex_string)[0])[0], True
-    except BaseException as e:
-        print(f"Hex String Parse to Obj error: {e}")
-        return None, False
 
 

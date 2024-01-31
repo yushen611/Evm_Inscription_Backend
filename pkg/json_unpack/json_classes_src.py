@@ -36,7 +36,6 @@ class NFT:
 
     def __init__(self, json_data: str):
         data = dumps(json_data)
-        data = loads(data)
         self.name = data['name']
         self.description = data['description']
         self.image = data['image']
@@ -79,10 +78,10 @@ class DeployFT:
     dec: int
 
     def __init__(self, json_data):
-        data = loads(json_data)
+        data = json_data
         self.p = data['p']
         self.op = FTOp.deploy
-        self.tick = bytes.fromhex(data['tick'])
+        self.tick = data['tick']
         self.max = data['max']
         self.lim = data['lim']
         self.dec = data['dec']
@@ -105,8 +104,8 @@ class MintFT:
     tick: str
     amt: int
 
-    def __init__(self, json_data: str):
-        data = loads(json_data)
+    def __init__(self, json_data):
+        data = json_data
         self.p = data['p']
         self.op = FTOp.mint
         self.tick = data['tick']
@@ -132,8 +131,8 @@ class TransferFT:
     to: str
     amt: int
 
-    def __init__(self, json_data: str):
-        data = loads(json_data)
+    def __init__(self, json_data):
+        data = json_data
         self.p = data['p']
         self.op = FTOp.transfer
         self.tick = data['tick']
