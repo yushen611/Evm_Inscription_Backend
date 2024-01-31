@@ -34,15 +34,15 @@ class NFT:
     image: str
     attributes: dict[str, str]
 
-    def __init__(self, json_data: str):
-        data = dumps(json_data)
+    def __init__(self, data):
         self.name = data['name']
         self.description = data['description']
         self.image = data['image']
-        temp: list[dict[str, str]] = list(data['attributes'])
+        abb_list: list[dict[str, str]] = list(data['attributes'])
         self.attributes: dict[str, str] = dict()
-        for it in temp:
-            self.attributes[it.pop('key')] = it.pop('value')
+        if not abb_list:
+            for it in abb_list:
+                self.attributes[it.pop('key')] = it.pop('value')
         self.owner = None # NFt的拥有者
 
 
@@ -77,8 +77,7 @@ class DeployFT:
     lim: int
     dec: int
 
-    def __init__(self, json_data):
-        data = json_data
+    def __init__(self, data):
         self.p = data['p']
         self.op = FTOp.deploy
         self.tick = data['tick']
@@ -104,8 +103,7 @@ class MintFT:
     tick: str
     amt: int
 
-    def __init__(self, json_data):
-        data = json_data
+    def __init__(self, data):
         self.p = data['p']
         self.op = FTOp.mint
         self.tick = data['tick']
