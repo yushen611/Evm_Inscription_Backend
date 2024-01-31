@@ -24,6 +24,7 @@ def decode_contract_string(hex_string)->str:
 
 
 def hex_to_object(hex_string: str) -> (DeployFT| MintFT | TransferFT | NFT | None, bool):
+    print("---begin hex_to_object----")
     json_str = decode_contract_string(hex_string)
     print(json_str)
     try:
@@ -52,6 +53,7 @@ def hex_to_object(hex_string: str) -> (DeployFT| MintFT | TransferFT | NFT | Non
         except BaseException as e:
             print(f"JSON Parsing to FT error {e}")
             return None, False
+    print(ft.__dict__)
     return ft, True
 
 

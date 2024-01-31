@@ -26,6 +26,7 @@ def get_valid_tokens():
 
         handler = event_handlers.get(type(obj))
         if handler:
+            print(event.transactionHash)
             handler(event, obj, NFT_list=NFT_list, DeployFT_map=DeployFT_map, Ft_Account_map=Ft_Account_map)
 
     return NFT_list, DeployFT_map, Ft_Account_map
