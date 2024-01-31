@@ -20,10 +20,9 @@ def get_valid_tokens():
     }
 
     for event in events:
-        obj = hex_to_object(event.data)
+        obj,_ = hex_to_object(event.data)
         if obj is None:
             continue
-
         handler = event_handlers.get(type(obj))
         if handler:
             print(event.transactionHash)
@@ -50,8 +49,9 @@ def _handle_deploy_ft(
         Ft_Account_map: Dict[str, Dict[str, int]]
     ):
     # 只承认第一Deploy FT的tick有效,后面相同的tick无论规格是否相同 都视为无效
-    if obj.tick not in DeployFT_map:
+    if obj.tick not in DeployFT_map.keys():
         DeployFT_map[obj.tick] = obj
+        print(DeployFT_map)
 
 def _handle_mint_ft(
         event:Event, 
