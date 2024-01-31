@@ -15,7 +15,6 @@ def get_events() -> list[e.Event]:
               f"&address={CONTRACT_ADDRESS}"
               f"&topic0={TOPIC_0}"
               f"&apikey={ETHERSCAN_API_KEY}")
-    print(url)
     response = requests.get(url).json()
     data_list = response['result']
     event_list = []
