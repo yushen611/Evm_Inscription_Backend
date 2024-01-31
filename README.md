@@ -9,6 +9,8 @@ https://fastapi.tiangolo.com/zh/
 ```bash
 pip install fastapi
 pip install "uvicorn[standard]"
+pip install web3
+pip install requests
 ```
 
 ## !启动方式
