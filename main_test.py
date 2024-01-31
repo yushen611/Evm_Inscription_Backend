@@ -17,7 +17,7 @@ def testjson():
 
 def testAPI():
     ntf_list, deployFT_map, ft_account_map  = get_valid_tokens()
-    print(deployFT_map)
+    print(ft_account_map)
 
 if __name__=="__main__" :
     testAPI()

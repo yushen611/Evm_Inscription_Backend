@@ -25,7 +25,7 @@ def get_valid_tokens():
             continue
         handler = event_handlers.get(type(obj))
         if handler:
-            print(event.transactionHash)
+            # print(event.transactionHash)
             handler(event, obj, NFT_list=NFT_list, DeployFT_map=DeployFT_map, Ft_Account_map=Ft_Account_map)
 
     return NFT_list, DeployFT_map, Ft_Account_map
@@ -51,7 +51,7 @@ def _handle_deploy_ft(
     # 只承认第一Deploy FT的tick有效,后面相同的tick无论规格是否相同 都视为无效
     if obj.tick not in DeployFT_map.keys():
         DeployFT_map[obj.tick] = obj
-        print(DeployFT_map)
+        # print(DeployFT_map)
 
 def _handle_mint_ft(
         event:Event, 
@@ -73,11 +73,14 @@ def _handle_transfer_ft(
         DeployFT_map: Dict[str, DeployFT], 
         Ft_Account_map: Dict[str, Dict[str, int]]
     ):
-    if obj.tick in DeployFT_map and obj.tick in Ft_Account_map[obj.tick]:
+    if obj.tick in DeployFT_map.keys() and obj.tick in Ft_Account_map.keys():
         sender = get_transaction_from(event.transactionHash)
         if obj.amt <= Ft_Account_map[obj.tick][sender]:
             Ft_Account_map[obj.tick][sender]-= obj.amt
             Ft_Account_map[obj.tick][obj.to] += obj.amt
+            # 如果转账后余额为0，就把这个账户删除了
+            if Ft_Account_map[obj.tick][sender] == 0:
+                del Ft_Account_map[obj.tick][sender]
 
         
         

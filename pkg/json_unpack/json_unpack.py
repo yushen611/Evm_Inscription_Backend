@@ -19,24 +19,24 @@ def decode_contract_string(hex_string) -> str:
         original_str = decoded_bytes[64:64 + str_length].decode()
         return original_str
     except BaseException as e:
-        print(f"Hex String Decode error: {e}")
+        # print(f"Hex String Decode error: {e}")
         return None
 
 
 def hex_to_object(hex_string: str) -> (DeployFT | MintFT | TransferFT | NFT | None, bool):
-    print("---begin hex_to_object----")
+    # print("---begin hex_to_object----")
     json_str = decode_contract_string(hex_string)
     try:
         json_data = json.loads(json_str)  # 把json_str 转成字典
     except BaseException as e:
         # print(f"Invalid JSON: {e}")
         return None, False
-    print(json_data)
+    # print(json_data)
     if "op" not in json_data:
         try:
             ft = NFT(json_data)
         except BaseException as e:
-            print(f"JSON Parsing to NFT error: {e}")
+            # print(f"JSON Parsing to NFT error: {e}")
             return None, False
     else:
         try:
@@ -52,5 +52,5 @@ def hex_to_object(hex_string: str) -> (DeployFT | MintFT | TransferFT | NFT | No
         except BaseException as e:
             # print(f"JSON Parsing to FT error {e}")
             return None, False
-    print(type(ft), ft.__dict__)
+    # print(type(ft), ft.__dict__)
     return ft, True
