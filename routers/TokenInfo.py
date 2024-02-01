@@ -2,6 +2,7 @@ from fastapi import APIRouter,HTTPException
 from responce.Response import *
 from pkg.token_getter.tokens import *
 from typing import Union
+from pkg.Enum.mode import Mode
 
 router = APIRouter()
 # todo: 这里写token info（ywy）
@@ -19,7 +20,7 @@ def get_nft_all():
 
 @router.get("/token/ft/can_mint")
 def get_ft_can_mint():
-    _, deployft_map, _  = get_valid_tokens()
+    _, deployft_map, _  = get_valid_tokens(Mode.fast)
     # 使用成功响应的帮助函数
     return success_response(data=deployft_map)
 
