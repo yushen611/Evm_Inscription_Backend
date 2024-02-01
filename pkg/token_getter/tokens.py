@@ -5,8 +5,35 @@ from collections import defaultdict
 from pkg.eventGetter.Transaction import *
 from pkg.eventGetter.Event import Event
 from typing import Dict, List
+from pkg.save_load.save_load import *
+from pkg.Enum.mode import Mode
 
-def get_valid_tokens():
+def get_valid_tokens(mode:Mode=Mode.default):
+    # 加载老数据
+    NFT_list,DeployFT_map,Ft_Account_map = load_NFT_list(),load_DeployFT_map(),load_Ft_Account_map()
+    if mode == mode.fast:
+        return NFT_list,DeployFT_map,Ft_Account_map
+    # 加载新数据
+    download_NFT_list,download_DeployFT_map,download_Ft_Account_map = download_nft_ft()
+    # 合并
+    if len(download_NFT_list) > 0:
+        NFT_list.extend(download_NFT_list)
+
+    if len(download_DeployFT_map) > 0:
+        for key, value in download_DeployFT_map.items():
+            DeployFT_map[key] = value
+
+    if len(download_Ft_Account_map) > 0 :
+        for outer_key, inner_dict in download_Ft_Account_map.items():
+            for inner_key, value in inner_dict.items():
+                Ft_Account_map[outer_key][inner_key] += value
+
+    save_NFT_list(NFT_list)
+    save_DeployFT_map(DeployFT_map)
+    save_Ft_Account_map(Ft_Account_map)
+    return NFT_list, DeployFT_map, Ft_Account_map
+
+def download_nft_ft():
     NFT_list = []
     DeployFT_map = defaultdict(DeployFT)
     Ft_Account_map = defaultdict(lambda: defaultdict(int))
@@ -27,7 +54,6 @@ def get_valid_tokens():
         if handler:
             # print(event.transactionHash)
             handler(event, obj, NFT_list=NFT_list, DeployFT_map=DeployFT_map, Ft_Account_map=Ft_Account_map)
-
     return NFT_list, DeployFT_map, Ft_Account_map
 
 def _handle_nft(
