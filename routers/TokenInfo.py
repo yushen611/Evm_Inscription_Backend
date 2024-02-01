@@ -26,13 +26,13 @@ def get_ft_can_mint():
 
 @router.get("/token/ft/all")
 def get_ft_all():
-    _, _, ft_account_map  = get_valid_tokens()
+    _, _, ft_account_map  = get_valid_tokens(Mode.fast)
     # 使用成功响应的帮助函数
     return success_response(data=ft_account_map)
 
 @router.get("/token/ft/{ft_tick}")
 def get_ft_by_tick(ft_tick: str):
-    _, _, ft_account_map  = get_valid_tokens()
+    _, _, ft_account_map  = get_valid_tokens(Mode.fast)
     if ft_tick not in ft_account_map.keys():
         error_response("ft_tick is not been deployed ")
     # 使用成功响应的帮助函数
