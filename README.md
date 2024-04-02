@@ -9,7 +9,7 @@ EVM上的铭文系统后端
 
 [Show Video Indexer:https://drive.google.com/file/d/1-kkEtzdEI6P99HW_F_npQ_fITLnIeO-O/view?usp=sharing](https://drive.google.com/file/d/1-kkEtzdEI6P99HW_F_npQ_fITLnIeO-O/view?usp=sharing)  
 
-
+[erc-7583](https://github.com/insevm/ERCs/blob/master/ERCS/erc-7583.md)
 ## 安装fastapi 
 
 https://fastapi.tiangolo.com/zh/
